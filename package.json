@@ -1,0 +1,19 @@
+{
+  "name": "sws_web_re",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EtBLh/sws-web-re.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EtBLh/sws-web-re/issues"
+  },
+  "homepage": "https://github.com/EtBLh/sws-web-re#readme"
+}
