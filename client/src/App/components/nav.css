@@ -1,0 +1,15 @@
+#nav {
+    position: absolute;
+    right: 0;
+    left: 0;
+    text-align: right;
+    font-size: 2em;
+    transform: scale(2,2) translate(-25%, 0);
+    z-index: 100;
+}
+
+@media screen and (max-width: 768px){
+    #nav {
+        transform: none; 
+    } 
+}

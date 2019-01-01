@@ -1,0 +1,37 @@
+* {
+  box-sizing: border-box;
+}
+
+body{
+  font-size: 14px;
+  margin: 0;
+  padding: 2em;
+  width: 100vw;
+}
+
+.root{
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.container{
+  width: 1000px;
+  margin: 0 auto;
+  display: block;
+  position: relative;
+}
+
+.slider{
+  height: 600px;
+}
+
+
+@media only screen and (max-width: 768px) {
+  body{
+    padding: 7.5vw;
+  }
+  .container{
+    width: 85vw;
+  }
+}
