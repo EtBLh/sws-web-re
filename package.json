@@ -4,10 +4,12 @@
   "description": "",
   "main": "",
   "scripts": {
+    "start" : "cd server && node App.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EtBLh/sws-web-re.git"
+    "url": "git+https://github.com/EtBLh/sws-web-re.git",
+    "start": "node server/App.js"
   },
   "keywords": [],
   "author": "",
