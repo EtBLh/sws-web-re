@@ -5,6 +5,8 @@
 const express = require('express');
 const path = require('path');
 
+//----------------------express app config----------------------
+
 const app = express()
 
 let a = {
@@ -32,7 +34,9 @@ app.post('/api/vote', (req,res) =>{
     a.voteNum++;
 });
 
-const port = process.env.PORT || 80;
+//----------------------app start----------------------
+
+const port = process.env.PORT || 5000;
 app.listen(port);
 
 console.log('Express app is listening on '+ port);
