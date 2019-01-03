@@ -1,14 +1,14 @@
-# SwS Web 
+# SwS Web
 
-A web project using nodejs 
+A web project using nodejs
 
------------------- 
+------------------
 
-## purpose 
+## purpose
 
-Develop for a singing competition : sing with soul 
-with a polling system 
+Develop for a singing competition : sing with soul
+with a polling system
 
-## struture 
+## struture
 
 react-router app inside of express.js web
