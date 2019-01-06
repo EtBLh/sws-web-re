@@ -3,9 +3,48 @@
     margin: 10px;
     padding: 20px;
     display: inline-block;
+    position: relative;
 }
 
-.singerIcon{
+.singer .singerIcon{
    width: 100%;
    border-radius: 100%; 
+}
+
+.singer .moreInfo{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    background-color: rgb(230,90,0);
+    border: none;
+    border-radius: 3px;
+    color: white;
+}
+
+@media screen and (max-width: 768px){
+    .singer {
+        width: 100%;
+        margin: 0;
+        padding: 0; 
+        height: 170px;
+        margin-top: 1em;
+    }
+    .singer .singerIcon{
+        width: 30%;
+        position: relative;
+        top: 50%;
+        transform: translateY(-150%);
+        left: 0px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .singer .content{
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+        width: 65%;
+        display: inline-block;
+        height: 130px;;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
 }

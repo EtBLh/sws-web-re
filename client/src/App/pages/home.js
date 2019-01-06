@@ -16,18 +16,12 @@ export default class Home extends Component {
         <Swiper/>
         <div id='singers'>
            <Singer/> 
+           <Singer reverse='1'/> 
            <Singer/> 
+           <Singer reverse='1'/> 
            <Singer/> 
+           <Singer reverse='1'/> 
         </div>
-
-        {/* link */}
-        {/*
-        <Link to={'./list'}>
-        <button variant="raised">
-            My List
-        </button>
-        </Link>
-        */}
       </div>
     )
   }
