@@ -4,6 +4,7 @@ import Logo from '../components/logo';
 import Swiper from '../components/swiper'
 import Spacing from '../components/spacing'
 import Nav from '../components/nav'
+import Singer from '../components/singer'
 
 export default class Home extends Component {
   render() {
@@ -13,6 +14,11 @@ export default class Home extends Component {
         <Nav/>
         <Spacing height="35px"/>
         <Swiper/>
+        <div id='singers'>
+           <Singer/> 
+           <Singer/> 
+           <Singer/> 
+        </div>
 
         {/* link */}
         {/*

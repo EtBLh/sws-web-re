@@ -34,7 +34,7 @@ export default class swiper extends React.Component{
     return(
         <Swiper {...params}>
           <div>
-            <img src={testImage} alt="test"/>
+            <img src={testImage} alt="test" className='slider-image slider'/>
           </div>
         </Swiper>
     )
