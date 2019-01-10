@@ -7,6 +7,8 @@ body{
   margin: 0;
   padding: 2em;
   width: 100vw;
+  position: relative;
+  font-family: 'Noto Serif';
 }
 
 .root{
@@ -26,6 +28,9 @@ body{
   height: 600px;
 }
 
+footer{
+  min-height: 400px;
+}
 
 @media only screen and (max-width: 768px) {
   body{

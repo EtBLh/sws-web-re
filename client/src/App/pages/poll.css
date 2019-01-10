@@ -1,0 +1,36 @@
+.sub-title{
+    width: 100%;
+    height: .5rem;
+    border-bottom: 1px solid darkgray;
+    text-align: center;
+    margin: 1rem 0;
+    padding: 1rem;
+}
+
+.sub-title span {
+    font-size: 1.5rem;
+    background-color: white;
+    padding: 0 10px;
+}
+
+.success-sign{
+    color: #894EE8; 
+    font-size: 14rem;
+    display: block;
+    text-align: center;
+    margin: 0px auto;
+}
+
+.home_link{
+    background-color: #894EE8; 
+    position: fixed;
+    left: 0;
+    top: 50px;
+    color: white;
+    height: 6rem;
+    line-height: 6rem;
+    width: 2rem;
+    text-align: center;
+    border-radius: 0 7px 7px 0;
+    font-size: 1.2rem;
+}

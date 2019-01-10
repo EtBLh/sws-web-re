@@ -1,9 +1,10 @@
 .singer {
     width: 300px;
-    margin: 10px;
+    margin: 0 10px;
     padding: 20px;
     display: inline-block;
     position: relative;
+    vertical-align: top;
 }
 
 .singer .singerIcon{
@@ -11,40 +12,34 @@
    border-radius: 100%; 
 }
 
-.singer .moreInfo{
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-    background-color: rgb(230,90,0);
-    border: none;
-    border-radius: 3px;
-    color: white;
-}
-
 @media screen and (max-width: 768px){
     .singer {
         width: 100%;
-        margin: 0;
+        margin: 2rem 0;
         padding: 0; 
         height: 170px;
         margin-top: 1em;
+        display: block;
+        line-height: 170px;
     }
     .singer .singerIcon{
         width: 30%;
-        position: relative;
-        top: 50%;
-        transform: translateY(-150%);
-        left: 0px;
         display: inline-block;
-        vertical-align: middle;
     }
     .singer .content{
+        text-align: left;
+        line-height: 1.2rem;
+        padding-left: 5%;
         margin-left: 2.5%;
         margin-right: 2.5%;
         width: 65%;
         display: inline-block;
-        height: 130px;;
+        height: 100%;
         text-overflow: ellipsis;
         overflow: hidden;
+        vertical-align: top;
+    }
+    .singer .content h3{
+        margin: 0;
     }
 }

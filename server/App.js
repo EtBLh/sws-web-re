@@ -20,11 +20,13 @@ app.get('/api/getList', (req, res)=> {
 
 app.post('/api/poll', (req, res)=> {
     let body = req.body;
-    console.log(body)
+    res.json({status: "success",email: body.email, object: body.object})
+    // ---TODO---
+    // ---Handle poll instance
+    console.log(`A poll request was posted, email: ${body.email}, object: ${body.object}`)
 })
 
 app.get('/api/voteCheck', (req, res)=>{
-    res.json(a);
 });
 
 // Handles any requests that don't match the ones above
@@ -34,7 +36,7 @@ app.get('*', (req,res) =>{
 
 //----------------------app start----------------------
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 80;
 app.listen(port);
 
 console.log('Express app is listening on '+ port);

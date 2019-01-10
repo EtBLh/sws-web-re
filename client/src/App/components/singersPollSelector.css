@@ -1,0 +1,43 @@
+.selector{
+    width: 200px;
+    border: #EcEcEc solid 2px;
+    border-radius: 50%;
+    height: 200px;
+    display: inline-block;
+    padding: 7px;
+    margin: 1rem;
+}
+
+.singerImage{
+    display: inline-block;
+    width: 180px;
+    border-radius: 50%;
+}
+
+.name{
+    font-size: 1.2rem;
+    display: inline-block;
+    margin: .5rem;
+}
+
+#verification{
+    text-align: center;
+}
+
+#verification #email {
+    width: 300px;
+    height: 30px;
+    border: #EcEcEc solid 1px;
+    border-radius: 5px;
+    background: white
+}
+
+#verification #pollButton{
+    font-size: 1rem;
+    background: #894EE8;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    width: 100px;
+    height: 30px;
+}
