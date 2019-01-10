@@ -55,7 +55,7 @@ function Validater(auth, silent=false) {
     };
     this.template = `
     This is a mail sended from the vote website for verify you email
-    Click this link to confirm <a href="{0}">{0}</a>
+    Click this link to confirm <a href="http://{0}">{0}</a>
     
     From SP Student Union
     `;
