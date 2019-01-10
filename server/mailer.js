@@ -23,7 +23,7 @@ function createTransporter (options) {
 
     // create options
     let defaultOptions = {
-        service: 'gmail',
+        service: 'Gmail',
         auth: {
             user:  'username@example.com',
             pass:  'password',
@@ -31,11 +31,12 @@ function createTransporter (options) {
     };
     // merge options
     let opt = mergeConfig(options);
+    console.log(opt)
     
     return nodemailer.createTransport(opt);
 }
 
-function Validater(options, log) {
+function Validater(auth, silent=false) {
     /**
      * @description a mailer constructor
      * @param {Object} contains two object: transporterOptions,\
@@ -45,117 +46,91 @@ function Validater(options, log) {
      */
     
     // validate options, username and password shoud be included
-    if (!options.transporter.auth) throw "username and password shoud be included in options, function createMailer";
+    if (!auth) throw "username and password shoud be included in auth, function createMailer";
     
-    // set properties
-    this.transporter = createTransporter(options.transporter);
-    this.BasicMailOption = options.mail;
-    this.log = mergeConfig({
-        send: function (error, info) {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log('Email sent: ' + info.response);
-            }
-        },
-        save: function (error) {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log('Save map...done');
-            }
+    // property
+    this.map = {
+        'uuid': {},
+        'email': {}
+    };
+    this.template = `
+    This is a mail sended from the vote website for verify you email
+    Click this link to confirm <a href="{0}">{0}</a>
+    
+    From SP Student Union
+    `;
+    this.basicSetting = {
+        user: auth.user,
+        subject: "Verify Email"
+    }
+
+    // init
+    this.transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: auth
+    });
+
+    this.render = function (...args) {
+        let index = 0;
+        let tmp = this.template;
+        let pattern = '';
+        for (let text of args) {
+            pattern = `\\{${index}\\}`;
+            tmp = this.template.replace(new RegExp(pattern, 'g'), text);
+            index++
         }
-    }, log);
-    this.content;
-    this.map = {uuid:{}, mail:{}};
-    this.mapFilename = 'map.json';
-    
-    // render methods
-    this.getMailOptions = opt => mergeConfig(opt, this.BasicMailOption);
-    this.renderContent;
+        return tmp;
+    }
 
-    // send mail
-    this.send = content => {
-        let mailOptions = getMailOptions();
-        mailOptions.html = content;
-        this.transporter.sendMail(mailOptions, this.log.send);
-    };
 
-    // read map from file
-    this.readMap = function (filename=this.mapFilename) {
-        let fileContent;
-        fs.readFileSync(filename, function (error, data) {
-            if (error) {
-                console.log(error);
-            } else {
-                fileContent = JSON.parse(data.toString());
-            }
-        });
-        fileContent = mergeConfig(fileContent.mail, map.mail);
-        fileContent = mergeConfig(fileContent.uuid, map.uuid); 
-        return fileContent;
-    };
-
-    // save map to file
-    this.save = async function (filename=this.mapFilename) {
-        let fileContent;
-        await fs.readFile(filename, function (error, data) {
-            if (error) {
-                console.log(error);
-            } else {
-                fileContent = JSON.parse(data.toString());
-            }
-        });
-        fileContent = mergeConfig(fileContent.mail, map.mail);
-        fileContent = mergeConfig(fileContent.uuid, map.uuid); 
-        
-        fs.writeFile(filename, fileContent, this.log.save);
-    };
-
-    // clear map
-    this.clearMap = function () { this.map = {uuid:{}, mail:{}}; };
-
-    this.isValid = function (email, type='mail') {
-        if (this.map.[type][email]) {
-            return this.map[type][email];
-        } else {
-            let fileContent =  this.readMap();
-            return fileContent[type][email] ? fileContent[type][email] : null;
-            // this.clearMap();
+    // send mail function
+    this.send = function (content, email) {
+        let mailOption = {
+            from: this.basicSetting.user,
+            to: email,
+            subject: this.basicSetting.subject,
+            html: this.render(content)
         }
+       this.transporter.sendMail(mailOption, function (error, response) {
+           if (!silent) {
+               if (error) {
+                   console.log(error);
+               } else {
+                   console.log(response);
+               }
+           }
+       });
     };
-    
-    // mark email/someone as checked
+
+    this.add = function (email, send=true) {
+        let id = uuid()
+        // add Record to map
+        this.map.uuid[id] = email;
+        if (this.map.email[email] === undefined) {
+            this.map.email[email] = false;
+        }
+        if (send) {
+            this.send(id, email);
+        }
+    }
+
     this.mark = function (email) {
-        if (error) { console.log(error); }
-        // mark email as true
-        // and remove uuid
-        let item = this.map.mail[email];
-        if (item) {
-            delete this.map.uuid[item];
-            this.map.mail[email] = true;
-        } else {
-            let fileContent = this.readMap();
-            fileContent = this.readMap();
-            item = fileContent.mail[email];
-            if (!item) return;
-            delete fileContent.uuid[item];
-            fileContent.mail[email] = true;
-            fs.writeFile(this.mapFilename, fileContent, function (error) {
-                if (error) {
-                    console.log(error);
-                }
-            }
-        }
-    };
+        this.map.email[email] = true;
+    }
 
-    this.add = function (email) {
-        // if (this.find(email)) console.log(`Email ${email} is already existed`);
-        let uid = uuid();
-        this.map.uuid[email] = uid;
-        this.map.mail[uid] = email;
-        this.send(email);
-    };
+    this.valid = function (email, id, deleteRecord=true) {
+        if (this.map.uuid[id] === mail) {
+            if (deleteRecord) {
+                delete this.map.uuid[id]
+            }
+            this.mark(email);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    this.isVerify = email => this.map.email[email];
 }
 
 module.exports = {
