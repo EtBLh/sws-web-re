@@ -15,9 +15,17 @@ export default class Poll extends React.Component{
             submitted:{
                 email: '',
                 object: -1,
-                status: 'unsubmitted'
-            }
+                status: false
+            },
+            pollAvailability: false
         }
+        fetch('/api/pollStatus')
+            .then((res) => {
+                return res.json();
+            })
+            .then((data) => {
+                this.setState({pollAvailability: data.status});
+            })
     }
 
     async postData(url=``, data = {}) {
@@ -48,9 +56,11 @@ export default class Poll extends React.Component{
             console.log({email: this.state.email, object: this.state.selectedID });
             this.postData('/api/poll', {email: this.state.email, object: this.state.selectedID })
             .then(data => {
-                this.setState({submitted: data})
-                this.refs['main'].style.display = 'none';
-                this.refs['success'].style.display = 'block';
+                this.setState({submitted: {
+                    email: data.email,
+                    object: data.object,
+                    status: true
+                }})
             })
             .then(error => console.log(error))
         }
@@ -74,9 +84,15 @@ export default class Poll extends React.Component{
                     <i className="fas fa-home"></i> 
                     </div>
                 </Link>
-                <div className='container' ref='success' style={{display:'none', textAlign: 'center'}}>
+                <div className='container' ref='success' 
+                style={{
+                    display:this.state.pollAvailability&&
+                        this.state.submitted.status? 'block':'none',
+                    textAlign: 'center'}}
+                >
+
                     <Spacing height='40px'/>
-                    <i className="fas fa-check-circle success-sign"></i>
+                    <i className="fas fa-check-circle big-sign"></i>
                     <p style={{fontSize: '1.3rem'}}>
                         A verification email was sent to <br/> 
                         <b>{this.state.submitted.email} </b><br/>
@@ -90,7 +106,25 @@ export default class Poll extends React.Component{
                     </div>
                     <Spacing height='140px'/>
                 </div>
-                <div className='container' ref='main'>
+                <div className='container' ref='unavailable' style={{display: this.state.pollAvailability? 'none': 'block', textAlign: 'center'}}>
+                    <Spacing height='40px'/>
+                    <i className="fas fa-times-circle big-sign"></i>
+                    <p style={{fontSize: '1.3rem'}}>
+                        Sorry, it's not able to poll for now :(
+                    </p>
+                    <Spacing height='40px'/>
+                    <div className='sub-title' >
+                        <span >
+                            Sing with Soul Polling Sys
+                        </span>
+                    </div>
+                    <Spacing height='140px'/>
+                </div>
+                <div className='container'
+                 ref='main' 
+                 style={{display: this.state.pollAvailability&&
+                    !this.state.submitted.status? 'block':'none'}}
+                >
                     <div className='sub-title' >
                         <span >
                             Select Your Fav Singer

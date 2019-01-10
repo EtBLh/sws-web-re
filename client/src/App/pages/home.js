@@ -9,6 +9,21 @@ import SingerCell from '../components/singerCell'
 import singerData from '../data/singers'
 
 export default class Home extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      pollAvailability: false
+    }
+    fetch('/api/pollStatus')
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        this.setState({pollAvailability: data.status});
+      })
+  }
+
   render() {
     return(
      <div>
@@ -18,9 +33,9 @@ export default class Home extends Component {
         <Spacing height="35px"/>
         <Swiper/>
         <Spacing height="35px"/>
-        <div id="pollPortal">
-          <h3>Vote for your favorite singer!</h3> <br/>
-          <Link to={'/poll'}>Vote</Link>
+        <div id="pollPortal" style={{display: this.state.pollAvailability? 'block': 'none'}}>
+          <h3>Poll for your favorite singer!</h3> <br/>
+          <Link to={'/poll'}>Poll</Link>
         </div>
         <div id='singers'>
           <Spacing height="35px"/>
@@ -32,7 +47,7 @@ export default class Home extends Component {
           <Spacing height="35px"/>
           {
             singerData.individual.map(
-              (value) => <SingerCell img={value.image} name={value.name} content={value.text} key={value.id}/>
+              (value) => <SingerCell img={value.image} name={value.number+'. '+value.name} content={value.text} key={value.id}/>
             )
           }
           <Spacing height="35px"/>
@@ -43,9 +58,9 @@ export default class Home extends Component {
           </div>
           <Spacing height="35px"/>   
           {
-                singerData.cooperate.map(
-                  (value) => <SingerCell img={value.image} name={value.name.join('\n')} content={value.text} key={value.id}/>
-                )
+            singerData.cooperate.map(
+              (value) => <SingerCell img={value.image} name={value.number+'. '+value.name.join('\n')} content={value.text} key={value.id}/>
+            )
           } 
           <Spacing height="45px"/>
         </div>
