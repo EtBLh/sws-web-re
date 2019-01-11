@@ -1,7 +1,6 @@
 import React from 'react';
 import './nav.css'
 import Spacing from './spacing'
-import {Link } from 'react-router-dom'
 
 export default class nav extends React.Component{
 

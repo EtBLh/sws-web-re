@@ -6,7 +6,8 @@
   "scripts": {
     "start": "cd server && node App.js",
     "build": "cd client %% npm run build",
-    "heroku-postbuild": "cd client && npm i --only=dev && npm i && npm run build && cd ../server && npm i"
+    "heroku-postbuild": "cd client && npm i --only=dev && npm i && npm run build && cd ../server && npm i",
+    "pkg": "pkg . --out-path=dist/"
   },
   "repository": {
     "type": "git",
@@ -19,5 +20,6 @@
   "bugs": {
     "url": "https://github.com/EtBLh/sws-web-re/issues"
   },
-  "homepage": "https://github.com/EtBLh/sws-web-re#readme"
+  "homepage": "https://github.com/EtBLh/sws-web-re#readme",
+  "bin": "server/App.js"
 }

@@ -46,6 +46,7 @@ export default class Poll extends React.Component{
     }
 
     submit(){
+
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
         if(this.state.selectedID === -1){
@@ -53,16 +54,18 @@ export default class Poll extends React.Component{
         } else if(!re.test(this.state.email)){
             alert(`Your email address "${this.state.email}" is not validated.`)
         } else {
-            console.log({email: this.state.email, object: this.state.selectedID });
             this.postData('/api/poll', {email: this.state.email, object: this.state.selectedID })
             .then(data => {
+                if(data.isVerified){
+                    alert('Sorry, each can vote once.')
+                    return;
+                } 
                 this.setState({submitted: {
                     email: data.email,
                     object: data.object,
                     status: true
                 }})
             })
-            .then(error => console.log(error))
         }
     }
 
@@ -92,7 +95,7 @@ export default class Poll extends React.Component{
                 >
 
                     <Spacing height='40px'/>
-                    <i className="fas fa-check-circle big-sign"></i>
+                    <i className="fas fa-envelope big-sign"></i>
                     <p style={{fontSize: '1.3rem'}}>
                         A verification email was sent to <br/> 
                         <b>{this.state.submitted.email} </b><br/>

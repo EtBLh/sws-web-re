@@ -1,4 +1,4 @@
-export default 
+module.exports = 
     ['何家維','梁家瑤',
     '張曉彤','黎曦雅',
     '許金城','區樂遙',

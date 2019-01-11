@@ -54,14 +54,44 @@ function Validater(auth, silent=false) {
         'email': {}
     };
     this.template = `
-    This is a mail sended from the vote website for verify you email
-    Click this link to confirm <a href="http://{0}">{0}</a>
-    
-    From SP Student Union
-    `;
+    <div style='
+        margin: 0 auto;
+        display: inline-block;
+        background-color: #EEE;
+        border: solid 2px #EAEAEA;
+        border-radius: 10px;
+        padding: 1rem;
+    '>
+        <h1>
+            Sing With Soul
+        </h1>
+        <p>
+            This mail was sent from sws.spssa.ml for poll verification,<br/>
+            click the button below to finish verification.
+        </p>    
+
+
+        <a href="sws.spssa.ml/verify/{0}"
+           style='
+           display: block;
+           width: 150px;
+           height: 30px;
+           color: white;
+           margin: 0 auto;
+           border-radius: 5px;
+           text-align: center;
+           text-decoration: none;
+           background-color: #894EE8;
+           '
+        >Click me to Verify</a><br/><br/>
+        From SPSSA
+
+        <p style="color: darkgray">if you didn't poll, please ignore this email.</p>
+    </div>
+   `;
     this.basicSetting = {
         user: auth.user,
-        subject: "Verify Email"
+        subject: "Verification Email"
     }
 
     // init
@@ -96,7 +126,7 @@ function Validater(auth, silent=false) {
                if (error) {
                    console.log(error);
                } else {
-                   console.log(response);
+                   console.log(`A verification email was sent to ${response.envelope.to}`);
                }
            }
        });
@@ -118,13 +148,14 @@ function Validater(auth, silent=false) {
         this.map.email[email] = true;
     }
 
-    this.valid = function (email, id, deleteRecord=true) {
-        if (this.map.uuid[id] === mail) {
+    this.valid = function (id, deleteRecord=true) {
+        let email = this.map.uuid[id]
+        if (email) {
             if (deleteRecord) {
+                this.mark(this.map.uuid[id]);
                 delete this.map.uuid[id]
             }
-            this.mark(email);
-            return true;
+            return email;
         } else {
             return false;
         }

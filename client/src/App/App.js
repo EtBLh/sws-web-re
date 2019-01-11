@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import Home from './pages/home';
 import Poll from './pages/poll';
+import Verify from './pages/verify'
 
 class App extends Component {
   render() {
@@ -10,6 +11,7 @@ class App extends Component {
         <Switch>
           <Route exact path='/' component={Home}/>
           <Route path='/poll' component={Poll}/>
+          <Route path='/verify/:id' component={Verify}/>
         </Switch>
     )
     return (

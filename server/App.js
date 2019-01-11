@@ -7,36 +7,50 @@ const path = require('path');
 const { Validater } = require('./mailer')
 const secret = require('./secret')
 const readline = require('readline');
+const pollResult = require('./pollResult')
 
 //----------------------express app config----------------------
 
 const app = express()
 
-
 let pollStatus = false;
 let val = new Validater(secret)
+let pR = new pollResult()
 
 app.use(express.json());
 
 app.use(express.static(path.resolve('../client/build')));
 
-app.post('/api/poll', (req, res)=> {
-    if (!pollStatus) return;
+app.post('/api/poll', (req, res) => {
+    if (!pollStatus){
+        return;
+    } 
 
     let body = req.body;
-    res.json({status: "success",email: body.email, object: body.object})
+    if (val.isVerify(body.email)){
+        res.json({isVerified: true});
+        return;
+    }
+    res.json({status: "success" ,email: body.email, object: body.object})
 
     val.add(body.email)
-    // console.log(val.isVerify(body.email));
+    pR.temp[body.email] = body.object;
 
     console.log(`A poll request was posted, email: ${body.email}, object: ${body.object}`)
 })
 
-app.get('/api/voteCheck', (req, res)=>{
-});
-
 app.get('/api/pollStatus', (req, res)=>{
     res.json({status: pollStatus});
+})
+
+app.post('/api/verify/:id', (req, res) =>{
+    let email = val.valid(req.params.id);
+    if (email){
+        res.json({status: true})
+        pR.add(pR.temp[email]);
+    } else {
+        res.json({status: false})
+    }
 })
 
 // Handles any requests that don't match the ones above
@@ -49,7 +63,7 @@ app.get('*', (req,res) =>{
 const port = process.env.PORT || 80;
 app.listen(port);
 
-console.log('Express app is listening on '+ port);
+console.log('app is listening on '+ port);
 
 const cmdHandler = {
     'poll': function(cmd){
@@ -60,8 +74,11 @@ const cmdHandler = {
         else if (cmd[1] == 'deactivate') {
             pollStatus = false; 
             console.log('pollStatus is now deactivated')
+        } 
+        else if (cmd[1] == 'show') {
+            pR.show();
         } else {
-            console.log('input is undefined')
+            console.log('_input is undefined')
         }
     }
 }
@@ -74,9 +91,5 @@ const rl = readline.createInterface({
 rl.on('line', (input) => {
     if (input == "exit") process.exit(0);
     let cmd = input.split(" ");
-    try{
-        cmdHandler[cmd[0]](cmd);
-    } catch{
-        console.log('input is undefined')
-    }
+    cmdHandler[cmd[0]](cmd);
 });
