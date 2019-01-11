@@ -105,7 +105,6 @@ function Validater(auth, silent=false) {
                if (error) {
                    console.log(error);
                } else {
-                   console.log(`A verification email was sent to ${response.envelope.to}`);
                }
            }
        });

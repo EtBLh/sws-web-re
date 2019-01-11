@@ -224,7 +224,7 @@ export default class Poll extends React.Component{
                         <br/>
                         <p style={{color: '#BABABA', textAlign: 'left'}}>
                             After that, you will receive a verification email,
-                            Please check it on anywhere including your spam,
+                            Please check it anywhere including your spam,
                             open it and finish the verification
                         </p>
                     </div>

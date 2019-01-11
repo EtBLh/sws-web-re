@@ -17,7 +17,7 @@ const fs = require('fs')
 const app = express()
 
 let pollStatus = false;
-let val = new Validater(secret)
+let val = new Validater(secret, true)
 let favPR = new pollResult()
 let tUPR = new pollResult()
 
@@ -41,7 +41,6 @@ app.post('/api/poll', (req, res) => {
     favPR.temp[body.email] = body.favObject;
     tUPR.temp[body.email] = body.TUObject;
 
-    console.log(`A poll request was posted, email: ${body.email}, object: ${body.object}`)
 })
 
 app.get('/api/pollStatus', (req, res)=>{
