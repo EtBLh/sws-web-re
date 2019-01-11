@@ -15,27 +15,6 @@ function mergeConfig(defaultConfig, userConfig) {
     return config;
 }
 
-function createTransporter (options) {
-    /**
-     * @param {Object} options to create the transporter 
-     * @return {Object} an transporter
-     */
-
-    // create options
-    let defaultOptions = {
-        service: 'Gmail',
-        auth: {
-            user:  'username@example.com',
-            pass:  'password',
-        }
-    };
-    // merge options
-    let opt = mergeConfig(options);
-    console.log(opt)
-    
-    return nodemailer.createTransport(opt);
-}
-
 function Validater(auth, silent=false) {
     /**
      * @description a mailer constructor
@@ -102,15 +81,16 @@ function Validater(auth, silent=false) {
        });
     };
 
-    this.add = function (email, send=true) {
-        let id = uuid()
+    this.add = function (email, ctx=[], send=true) {
+        let id = uuid();
+        ctx.splice(0,0,id);
         // add Record to map
         this.map.uuid[id] = email;
         if (this.map.email[email] === undefined) {
             this.map.email[email] = false;
         }
         if (send) {
-            this.send(id, email);
+            this.send(ctx, email);
         }
     }
 
