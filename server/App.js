@@ -66,7 +66,7 @@ app.get('*', (req,res) =>{
 
 //----------------------app start----------------------
 
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 8080;
 app.listen(port);
 
 console.log('app is listening on '+ port);
