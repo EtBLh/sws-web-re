@@ -95,9 +95,6 @@ const cmdHandler = {
             favPR.setResult(data.fav)
             tUPR.setResult(data.TU)
         }
-        else {
-            console.log('_input is undefined')
-        }
     }
 }
 
@@ -106,8 +103,43 @@ const rl = readline.createInterface({
     output: process.stdout
   });
   
-rl.on('line', (input) => {
-    if (input == "exit") process.exit(0);
-    let cmd = input.split(" ");
-    cmdHandler[cmd[0]](cmd);
+let activeRL = () => {rl.on('line', (input) => {
+    if (input == "exit") {
+        rl.question("Do you want to save the result? yes/no/cancel: ", 
+            (ans) => {
+                if (ans == 'yes'){
+                    fs.writeFileSync('./result.json', JSON.stringify({fav: favPR.getResult(), TU: tUPR.getResult()}), 'utf-8');
+                    console.log(JSON.stringify({fav: favPR.getResult(), TU: tUPR.getResult()})) 
+                   
+                    console.log('--Fav--')
+                    favPR.show();
+                    console.log('--TU--')
+                    tUPR.show(); 
+
+                } else if(ans == 'no'){
+                    process.exit(0);
+                } else if(ans == 'cancel'){}
+            }
+        );
+        return;
+    }
+    try{
+        let cmd = input.split(" ");
+        cmdHandler[cmd[0]](cmd);
+    } catch {
+        console.log('input is invalid.')
+    }
+});}
+
+
+activeRL();
+
+process.on('SIGINT', function() {
+    rl.question("Caught interrupt signal, Are you sure you want to exit? yes/no: ", 
+        (ans) => {
+            if (ans == 'yes') process.exit(0);
+            else activeRL();
+        }
+    );
 });
+
