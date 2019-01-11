@@ -8,6 +8,8 @@ module.exports = function(){
             console.log(singerData[i-1]+": "+result[i]+"票")
         }
     };
+    this.setResult = (_result) => {result = _result}
+    this.getResult = () => result;
     this.add= (object) => {
         result[object]+=1;
     }

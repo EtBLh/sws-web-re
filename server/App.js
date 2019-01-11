@@ -8,6 +8,7 @@ const { Validater } = require('./mailer')
 const secret = require('./secret')
 const readline = require('readline');
 const pollResult = require('./pollResult')
+const fs = require('fs')
 
 //----------------------express app config----------------------
 
@@ -77,7 +78,15 @@ const cmdHandler = {
         } 
         else if (cmd[1] == 'show') {
             pR.show();
-        } else {
+        } 
+        else if( cmd[1] == 'export') {
+            fs.writeFileSync('./result.json', JSON.stringify(pR.getResult()), 'utf-8')
+            console.log(JSON.stringify(pR.getResult()))
+        }
+        else if( cmd[1] == 'load'){
+            pR.setResult(JSON.parse(fs.readFileSync('./result.json',{encoding: 'utf-8'})))
+        }
+        else {
             console.log('_input is undefined')
         }
     }
