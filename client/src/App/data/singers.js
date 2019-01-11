@@ -9,8 +9,28 @@ import singer8 from '../resource/singer8.JPG'
 import singer9 from '../resource/singer9.JPG'
 import singer10 from '../resource/singer10.JPG'
 import singer11 from '../resource/singer11.JPG'
+import singer12 from '../resource/singer12.JPG'
+import singer13 from '../resource/singer13.JPG'
+import singer14 from '../resource/singer14.JPG'
 
 export default {
+    'bigBoss': [
+        {
+            'name': '灰藍氣球',
+            'image': singer13,
+            'text': '澳門本地創作組合，曾獲得2017年度MACA流行歌曲創作大賽冠軍、最佳演繹獎、最佳作曲獎、最佳填詞獎以及在2016年度新濠博亞全澳青少年原創音樂比賽冠軍和最佳演繹獎等獎項。',
+        }, 
+        {
+            'name': '馬曼莉',
+            'image': singer14,
+            'text': '澳門獨有型格女歌手，公認唱功了得。由2000起參加港澳多個大型歌唱比賽，屢獲獎項。近年,馬曼莉開始參與多部電影、微電影及短片拍攝。歌曲有《背對背》、《摰親》、《re:volution》等。',
+        }, 
+        {
+            'name': '禤泳倫',
+            'image': singer12,
+            'text': '澳門驁映娛樂旗下第一位全職歌手、藝人，澳門演藝人協會常務理事。憑著極具辨識色的聲線於2013年第十一屆澳廣視至愛新聽力獲《飛躍表現獎》。2018年成為澳門Gathering 佳得利現磨現泡飲品店的首位代言人。',
+        }, 
+    ],
     'individual': [
         {
             'name': '何家維',

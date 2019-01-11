@@ -5,7 +5,9 @@
 const express = require('express');
 const path = require('path');
 const { Validater } = require('./mailer')
+//place email username and password
 const secret = require('./secret')
+//for building CLI 
 const readline = require('readline');
 const pollResult = require('./pollResult')
 const fs = require('fs')

@@ -57,7 +57,7 @@ export default class Poll extends React.Component{
             this.postData('/api/poll', {email: this.state.email, object: this.state.selectedID })
             .then(data => {
                 if(data.isVerified){
-                    alert('Sorry, each can vote once.')
+                    alert('Sorry, each email can only vote once.')
                     return;
                 } 
                 this.setState({submitted: {

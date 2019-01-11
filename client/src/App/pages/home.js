@@ -41,6 +41,18 @@ export default class Home extends Component {
           <Spacing height="35px"/>
           <div className='sub-title' >
             <span >
+              評審
+            </span>
+          </div>
+          <Spacing height="35px"/>
+          {
+            singerData.bigBoss.map(
+              (value, index) => <SingerCell img={value.image} name={value.name} content={value.text} key={index}/>
+            )
+          }
+          <Spacing height="35px"/>
+          <div className='sub-title' >
+            <span >
               獨唱組
             </span>
           </div>
