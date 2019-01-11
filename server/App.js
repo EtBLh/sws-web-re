@@ -18,7 +18,8 @@ const app = express()
 
 let pollStatus = false;
 let val = new Validater(secret)
-let pR = new pollResult()
+let favPR = new pollResult()
+let tUPR = new pollResult()
 
 app.use(express.json());
 
@@ -34,10 +35,11 @@ app.post('/api/poll', (req, res) => {
         res.json({isVerified: true});
         return;
     }
-    res.json({status: "success" ,email: body.email, object: body.object})
+    res.json({status: "success" ,email: body.email, favObject: body.favObject, TUObject: body.TUObject})
 
     val.add(body.email)
-    pR.temp[body.email] = body.object;
+    favPR.temp[body.email] = body.favObject;
+    tUPR.temp[body.email] = body.TUObject;
 
     console.log(`A poll request was posted, email: ${body.email}, object: ${body.object}`)
 })
@@ -50,7 +52,8 @@ app.post('/api/verify/:id', (req, res) =>{
     let email = val.valid(req.params.id);
     if (email){
         res.json({status: true})
-        pR.add(pR.temp[email]);
+        favPR.add(favPR.temp[email]);
+        tUPR.add(tUPR.temp[email]);
     } else {
         res.json({status: false})
     }
@@ -79,14 +82,19 @@ const cmdHandler = {
             console.log('pollStatus is now deactivated')
         } 
         else if (cmd[1] == 'show') {
-            pR.show();
+            console.log('--Fav--')
+            favPR.show();
+            console.log('--TU--')
+            tUPR.show();
         } 
         else if( cmd[1] == 'export') {
-            fs.writeFileSync('./result.json', JSON.stringify(pR.getResult()), 'utf-8')
-            console.log(JSON.stringify(pR.getResult()))
+            fs.writeFileSync('./result.json', JSON.stringify({fav: favPR.getResult(), TU: tUPR.getResult()}), 'utf-8');
+            console.log(JSON.stringify({fav: favPR.getResult(), TU: tUPR.getResult()}))
         }
         else if( cmd[1] == 'load'){
-            pR.setResult(JSON.parse(fs.readFileSync('./result.json',{encoding: 'utf-8'})))
+            data = JSON.parse(fs.readFileSync('./result.json',{encoding: 'utf-8'}));
+            favPR.setResult(data.fav)
+            tUPR.setResult(data.TU)
         }
         else {
             console.log('_input is undefined')

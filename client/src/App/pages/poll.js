@@ -10,7 +10,8 @@ export default class Poll extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            selectedID: -1,
+            selectedFavID: -1,
+            selectedTUID: -1,
             email: '',
             submitted:{
                 email: '',
@@ -49,12 +50,12 @@ export default class Poll extends React.Component{
 
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-        if(this.state.selectedID === -1){
+        if(this.state.selectedFavID === -1 || this.state.selectedTUID === -1){
             alert('Please select a singer')
         } else if(!re.test(this.state.email)){
             alert(`Your email address "${this.state.email}" is not validated.`)
         } else {
-            this.postData('/api/poll', {email: this.state.email, object: this.state.selectedID })
+            this.postData('/api/poll', {email: this.state.email, favObject: this.state.selectedFavID, TUObject: this.state.selectedTUID })
             .then(data => {
                 if(data.isVerified){
                     alert('Sorry, each email can only vote once.')
@@ -69,14 +70,22 @@ export default class Poll extends React.Component{
         }
     }
 
-    select(id){
+    select(id, type){
         this.setState({
-            selectedID: id
+            selectedFavID: type=="fav"?id:this.state.selectedFavID,
+            selectedTUID: type=="TU"?id:this.state.selectedTUID
         })
-        for (let i = 1; i <= 11; i++){
-            this.refs['SPS'+i].select(false)
+        if (type == 'TU'){
+            for (let i = 7; i <= 11; i++){
+                this.refs['SPS'+type+i].select(false)
+            }
+            this.refs['SPS'+type+id].select(true)
+        } else if(type == 'fav'){
+            for (let i = 1; i <= 11; i++){
+                this.refs['SPS'+type+i].select(false)
+            }
+            this.refs['SPS'+type+id].select(true)
         }
-        this.refs['SPS'+id].select(true)
     }
 
     render(){
@@ -84,9 +93,14 @@ export default class Poll extends React.Component{
             <div>
                 <Link to='/'>
                     <div className='home_link'>
-                    <i className="fas fa-home"></i> 
+                        <i className="fas fa-home"></i> 
                     </div>
                 </Link>
+
+
+                {/* 
+                  * success view
+                  */}
                 <div className='container' ref='success' 
                 style={{
                     display:this.state.pollAvailability&&
@@ -109,6 +123,11 @@ export default class Poll extends React.Component{
                     </div>
                     <Spacing height='140px'/>
                 </div>
+
+
+                {/* 
+                  * error view
+                  */}
                 <div className='container' ref='unavailable' style={{display: this.state.pollAvailability? 'none': 'block', textAlign: 'center'}}>
                     <Spacing height='40px'/>
                     <i className="fas fa-times-circle big-sign"></i>
@@ -123,6 +142,10 @@ export default class Poll extends React.Component{
                     </div>
                     <Spacing height='140px'/>
                 </div>
+
+                {/* 
+                  * main view
+                  */}
                 <div className='container'
                  ref='main' 
                  style={{display: this.state.pollAvailability&&
@@ -130,7 +153,7 @@ export default class Poll extends React.Component{
                 >
                     <div className='sub-title' >
                         <span >
-                            Select Your Fav Singer
+                            最佳人氣獎 
                         </span>
                     </div>
                     <div style={{textAlign: 'center'}}>
@@ -140,9 +163,9 @@ export default class Poll extends React.Component{
                             name={value.name} 
                             image={value.image}
                             id={value.id}
-                            res={(param) => this.select(param)}
+                            res={(param) => this.select(param, 'fav')}
                             key={value.id}
-                            ref={'SPS'+value.id}
+                            ref={'SPSfav'+value.id}
                             />
                         )
                     }
@@ -152,14 +175,33 @@ export default class Poll extends React.Component{
                             name={value.name.join("\n")} 
                             image={value.image}
                             id={value.id}
-                            res={(param) => this.select(param)}
+                            res={(param) => this.select(param, 'fav')}
                             key={value.id}
-                            ref={'SPS'+value.id}
+                            ref={'SPSfav'+value.id}
                             />
                         )
                     }
                     </div>
-
+                    <Spacing height='35px'/>
+                    <div className='sub-title' >
+                        <span >
+                            最佳默契獎 
+                        </span>
+                    </div>
+                    <div style={{textAlign: 'center'}}>
+                    {
+                        singersData.cooperate.map(value => 
+                            <SingersPollSelector 
+                            name={value.name.join("\n")} 
+                            image={value.image}
+                            id={value.id}
+                            res={(param) => this.select(param,'TU')}
+                            key={value.id}
+                            ref={'SPSTU'+value.id}
+                            />
+                        )
+                    }
+                    </div>
                     <Spacing height='35px'/>
 
                     <div className='sub-title' >
