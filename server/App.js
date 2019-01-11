@@ -126,7 +126,7 @@ let activeRL = () => {rl.on('line', (input) => {
     try{
         let cmd = input.split(" ");
         cmdHandler[cmd[0]](cmd);
-    } catch {
+    } catch(e) {
         console.log('input is invalid.')
     }
 });}
