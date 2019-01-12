@@ -31,16 +31,17 @@ app.post('/api/poll', (req, res) => {
     } 
 
     let body = req.body;
-    if (val.isVerify(body.email)){
+    let _email = body.email.toLowerCase();
+    if (val.isVerify(_email)){
         res.json({isVerified: true});
         return;
     }
 
-    res.json({status: "success" ,email: body.email, favObject: body.favObject, TUObject: body.TUObject})
+    res.json({status: "success" ,email: _email, favObject: body.favObject, TUObject: body.TUObject})
 
-    val.add(body.email)
-    favPR.temp[body.email] = body.favObject;
-    tUPR.temp[body.email] = body.TUObject;
+    val.add(_email)
+    favPR.temp[_email] = body.favObject;
+    tUPR.temp[_email] = body.TUObject;
 
 })
 
