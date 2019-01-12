@@ -35,6 +35,7 @@ app.post('/api/poll', (req, res) => {
         res.json({isVerified: true});
         return;
     }
+
     res.json({status: "success" ,email: body.email, favObject: body.favObject, TUObject: body.TUObject})
 
     val.add(body.email)
@@ -53,6 +54,9 @@ app.post('/api/verify/:id', (req, res) =>{
         res.json({status: true})
         favPR.add(favPR.temp[email]);
         tUPR.add(tUPR.temp[email]);
+        
+        delete favPR.temp[email];
+        delete tUPR.temp[email];
     } else {
         res.json({status: false})
     }
